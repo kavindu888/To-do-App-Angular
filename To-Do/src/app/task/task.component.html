@@ -1,0 +1,64 @@
+<div class="d-flex justify-content-center px-2 mt-2">
+  <div style="background-color: #EEEEEE;"
+    class=" px-2 py-2 border mt-4 main-shadow  col-12 col-sm-12 col-md-10 col-lg-8 ">
+
+    <h3 style="text-align: center;margin-top: 10px;text-decoration: underline;">To-Do List</h3>
+    <div class="d-flex justify-content-end"><button (click)="fatchData()" style="border-radius: 100%;" type="button" class="btn-re btn-success" ><i style="font-size:24px" class="fa">&#xf021;</i></button></div>
+    <br>
+@for( post of data;track post.id){
+
+
+   
+
+    <div class="accordion accordion-flush my-2" id="accordion">
+      <div class="accordion-item">
+        <h2 class="accordion-header">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" [attr.data-bs-target]="'#' + post.id" 
+            aria-expanded="false" aria-controls="collapseOne" (click) = "closeDisplay()">
+           {{post.title}}
+          </button>
+        </h2>
+        <div id={{post.id}} class="accordion-collapse collapse " data-bs-parent="#accordionExample">
+          <div class="accordion-body">
+            <div class="d-flex justify-content-end">
+              <button type="button" class="btn btn-link" data-bs-target="#view" (click) = "toggleDisplay()">Edit</button>
+              <button type="button" class="btn btn-link link-danger" (click)="onDelete(post.id)">Delete</button>
+
+
+            </div>
+            <div>
+              <p>{{post.description}}</p>
+            </div>
+
+          </div>
+          <form [formGroup]="updateForm">
+          <div class="px-5 collapse show" id="view" [hidden] = isShow>
+            <div class="mb-3 ">
+             
+              <label for="discption" class="form-label">Update Discption</label>
+              <textarea class="form-control" id="discption" rows="3" formControlName="description" ></textarea>
+              
+            </div>
+            <div *ngIf="updateForm.controls['description'].invalid  &&(updateForm.controls['description'].touched|| updateForm.controls['description'].dirty || isFromSubmit)">
+              <span class="text-danger text-sm" *ngIf="updateForm.controls['description'].errors?.['required']">* Description Can't Be Empty </span>
+              <span class="text-danger text-sm" *ngIf="updateForm.controls['description'].errors?.['maxlength']">* Description too long </span>
+              
+            </div>
+            <div class="d-flex flex-row-reverse">
+              <button  type="submit" class="btn btn-warning mb-3 d-flex flex-row-reverse px-4"><span
+                  style="font-weight: 600;" (click)="onUpdate(post.id,post.description)">Update Discption</span></button>
+            </div>
+          </div>
+        </form>
+        </div>
+      </div>
+
+
+
+
+
+    </div>
+  } @empty {
+    <div><h1>Not shedule Task</h1></div>
+    }
+  </div>
